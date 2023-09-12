@@ -29,21 +29,9 @@ async function main() {
   '0x20bB82F2Db6FF52b42c60cE79cDE4C7094Ce133F'
   )
 
-  const daiHolder = "0x60FaAe176336dAb62e284Fe19B885B095d29fB7F";
-  const uniHolder = "0x47173B170C64d16393a52e6C480b3Ad8c302ba1e";
-
   console.log("balance before", ethers.formatEther(await daiContract.balanceOf("0x20bB82F2Db6FF52b42c60cE79cDE4C7094Ce133F")))
   console.log("balance before", ethers.formatEther(await uniContract.balanceOf("0x20bB82F2Db6FF52b42c60cE79cDE4C7094Ce133F")))
 
-
-    await network.provider.send('hardhat_setBalance', [
-      daiHolder,
-      '0x5B888541B6553FA00',
-    ])
-    await network.provider.send('hardhat_setBalance', [
-      uniHolder,
-      '0x5B888541B6553FA00',
-    ])
 
   const a = await daiContract.connect(impersonatedSigner).approve(uniswapAddr, approveBmount);
   const b = await uniContract.connect(impersonatedSigner).approve(uniswapAddr, approveAmount);

@@ -14,10 +14,39 @@ interface UniswapInterface {
         uint deadline
     ) external returns (uint amountA, uint amountB, uint liquidity);
 
-    function swapExactETHForTokens(
-        uint amountOutMin,
-        address[] calldata path,
+    function addLiquidityETH(
+        address token,
+        uint amountTokenDesired,
+        uint amountTokenMin,
+        uint amountETHMin,
         address to,
         uint deadline
-    ) external payable returns (uint[] memory amounts);
+    )
+        external
+        payable
+        returns (uint amountToken, uint amountETH, uint liquidity);
+
+    function removeLiquidity(
+        address tokenA,
+        address tokenB,
+        uint liquidity,
+        uint amountAMin,
+        uint amountBMin,
+        address to,
+        uint deadline
+    ) external returns (uint amountA, uint amountB);
+
+    function removeLiquidityETH(
+        address token,
+        uint liquidity,
+        uint amountTokenMin,
+        uint amountETHMin,
+        address to,
+        uint deadline
+    ) external returns (uint amountToken, uint amountETH);
+
+    function getPair(
+        address tokenA,
+        address tokenB
+    ) external view returns (address pair);
 }
