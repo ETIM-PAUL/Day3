@@ -13,8 +13,8 @@ async function main() {
   const AmountADesired = ethers.parseEther('1');
   const AmountBDesired = ethers.parseEther('1');
 
-  const AmountAMin = ethers.parseEther('0.001');
-  const AmountBMin = ethers.parseEther('0.001');
+  const AmountAMin = ethers.parseEther('0');
+  const AmountBMin = ethers.parseEther('0');
 
   const to = "0x9d4eF81F5225107049ba08F69F598D97B31ea644";
 
@@ -35,15 +35,6 @@ async function main() {
   console.log("balance before", ethers.formatEther(await daiContract.balanceOf("0x20bB82F2Db6FF52b42c60cE79cDE4C7094Ce133F")))
   console.log("balance before", ethers.formatEther(await uniContract.balanceOf("0x20bB82F2Db6FF52b42c60cE79cDE4C7094Ce133F")))
 
-  //impersonate dai holder
-  const impersonatedDaiHolder = await ethers.getImpersonatedSigner(
-    daiHolder
-    )
-
-  //impersonate uni holder
-  const impersonatedUniHolder = await ethers.getImpersonatedSigner(
-    uniHolder
-    )
 
     await network.provider.send('hardhat_setBalance', [
       daiHolder,
@@ -54,13 +45,13 @@ async function main() {
       '0x5B888541B6553FA00',
     ])
 
-  const a = await daiContract.connect(impersonatedDaiHolder).approve(uniswapAddr, approveBmount);
-  const b = await uniContract.connect(impersonatedUniHolder).approve(uniswapAddr, approveAmount);
+  const a = await daiContract.connect(impersonatedSigner).approve(uniswapAddr, approveBmount);
+  const b = await uniContract.connect(impersonatedSigner).approve(uniswapAddr, approveAmount);
 
   a.wait();
   b.wait();
 
-  const result = await uniswapContract.connect(impersonatedSigner).addLiquidity(UNI, DAI, AmountADesired, AmountBDesired, AmountAMin, AmountBMin, to, deadline);
+  const result = await uniswapContract.connect(impersonatedSigner).addLiquidity(DAI, UNI, AmountADesired, AmountBDesired, AmountAMin, AmountBMin, to, deadline);
 
   console.log("The add liquidity function returns", result)
 
